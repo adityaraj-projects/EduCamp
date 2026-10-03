@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { User, Mail, Phone, Lock, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, Phone, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { AuthLayout } from '../../components/layout/AuthLayout';
 import { Input } from '../../components/ui/Input';
 import { Select } from '../../components/ui/Select';
 import { Button } from '../../components/ui/Button';
+import { useAuth } from './AuthContext';
 import type { SignupFormData, FormValidationErrors } from '../../types/auth';
 
 const CLASS_OPTIONS = [
@@ -31,6 +32,7 @@ const BOARD_OPTIONS = [
 ];
 
 export const SignupScreen: React.FC = () => {
+  const { signup } = useAuth();
   const [formData, setFormData] = useState<SignupFormData>({
     fullName: '',
     email: '',
@@ -45,19 +47,19 @@ export const SignupScreen: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<FormValidationErrors>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [infoMessage, setInfoMessage] = useState<string | null>(null);
+  const [successNotice, setSuccessNotice] = useState<string | null>(null);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }));
+    if (errors[name] || errors.general) {
+      setErrors((prev) => ({ ...prev, [name]: '', general: '' }));
     }
   };
 
-  const handleSignupSubmit = (e: React.FormEvent) => {
+  const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: FormValidationErrors = {};
 
@@ -94,15 +96,18 @@ export const SignupScreen: React.FC = () => {
       return;
     }
 
-    // Phase 1 UI submission without active backend user creation
     setIsLoading(true);
-    setInfoMessage(null);
-    setTimeout(() => {
-      setIsLoading(false);
-      setInfoMessage(
-        'Phase 1 UI verified! Account creation will be connected with Supabase Auth in Phase 2.'
-      );
-    }, 800);
+    setErrors({});
+    setSuccessNotice(null);
+
+    const result = await signup(formData);
+    setIsLoading(false);
+
+    if (result.success) {
+      setSuccessNotice('Account created successfully! Redirecting to your dashboard...');
+    } else {
+      setErrors({ general: result.error || 'Failed to create account. Please try again.' });
+    }
   };
 
   return (
@@ -160,20 +165,41 @@ export const SignupScreen: React.FC = () => {
           </p>
         </div>
 
-        {/* Feedback message banner */}
-        {infoMessage && (
+        {/* General Error Banner */}
+        {errors.general && (
           <div
             style={{
-              background: 'rgba(99, 102, 241, 0.15)',
-              border: '1px solid rgba(99, 102, 241, 0.35)',
+              background: 'rgba(239, 68, 68, 0.15)',
+              border: '1px solid rgba(239, 68, 68, 0.35)',
               borderRadius: '12px',
               padding: '12px 14px',
               fontSize: '12.5px',
-              color: '#C7D2FE',
+              color: '#FCA5A5',
+              lineHeight: 1.4,
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '8px',
+            }}
+          >
+            <AlertCircle size={16} color="#F87171" style={{ flexShrink: 0, marginTop: '2px' }} />
+            <span>{errors.general}</span>
+          </div>
+        )}
+
+        {/* Success Banner */}
+        {successNotice && (
+          <div
+            style={{
+              background: 'rgba(76, 175, 80, 0.15)',
+              border: '1px solid rgba(76, 175, 80, 0.4)',
+              borderRadius: '12px',
+              padding: '12px 14px',
+              fontSize: '12.5px',
+              color: '#A5D6A7',
               lineHeight: 1.4,
             }}
           >
-            {infoMessage}
+            {successNotice}
           </div>
         )}
 
@@ -192,6 +218,7 @@ export const SignupScreen: React.FC = () => {
             error={errors.fullName}
             leadingIcon={<User size={18} />}
             autoComplete="name"
+            disabled={isLoading}
           />
 
           {/* Email Address */}
@@ -205,6 +232,7 @@ export const SignupScreen: React.FC = () => {
             error={errors.email}
             leadingIcon={<Mail size={18} />}
             autoComplete="email"
+            disabled={isLoading}
           />
 
           {/* Mobile Number */}
@@ -218,6 +246,7 @@ export const SignupScreen: React.FC = () => {
             error={errors.mobileNumber}
             leadingIcon={<Phone size={18} />}
             autoComplete="tel"
+            disabled={isLoading}
           />
 
           {/* Two-Column: Select Class & Select Board (Side by Side) */}
@@ -230,6 +259,7 @@ export const SignupScreen: React.FC = () => {
               value={formData.selectedClass}
               onChange={handleInputChange}
               error={errors.selectedClass}
+              disabled={isLoading}
             />
 
             <Select
@@ -240,6 +270,7 @@ export const SignupScreen: React.FC = () => {
               value={formData.selectedBoard}
               onChange={handleInputChange}
               error={errors.selectedBoard}
+              disabled={isLoading}
             />
           </div>
 
@@ -254,6 +285,7 @@ export const SignupScreen: React.FC = () => {
             error={errors.password}
             leadingIcon={<Lock size={18} />}
             autoComplete="new-password"
+            disabled={isLoading}
             trailingIcon={
               <button
                 type="button"
@@ -282,6 +314,7 @@ export const SignupScreen: React.FC = () => {
             error={errors.confirmPassword}
             leadingIcon={<Lock size={18} />}
             autoComplete="new-password"
+            disabled={isLoading}
             trailingIcon={
               <button
                 type="button"
@@ -301,7 +334,7 @@ export const SignupScreen: React.FC = () => {
 
           {/* Primary SIGN UP Button */}
           <div style={{ marginTop: '12px' }}>
-            <Button type="submit" variant="primary" isLoading={isLoading}>
+            <Button type="submit" variant="primary" isLoading={isLoading} disabled={isLoading}>
               SIGN UP
             </Button>
           </div>

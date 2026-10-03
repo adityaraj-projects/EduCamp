@@ -46,8 +46,18 @@ export interface Database {
           role?: UserRole;
           avatar_url?: string | null;
           is_active?: boolean;
+          created_at?: string;
           updated_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey";
+            columns: ["id"];
+            isOneToOne: true;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
       };
     };
     Views: Record<string, never>;
@@ -55,5 +65,6 @@ export interface Database {
     Enums: {
       user_role: UserRole;
     };
+    CompositeTypes: Record<string, never>;
   };
 }

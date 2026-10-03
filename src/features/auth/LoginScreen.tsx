@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { User, Lock, Eye, EyeOff } from 'lucide-react';
+import { User, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { AuthLayout } from '../../components/layout/AuthLayout';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
+import { useAuth } from './AuthContext';
 import type { LoginFormData, FormValidationErrors } from '../../types/auth';
 
 export const LoginScreen: React.FC = () => {
+  const { login, loginWithGoogle } = useAuth();
   const [formData, setFormData] = useState<LoginFormData>({
     identifier: '',
     password: '',
@@ -14,17 +16,17 @@ export const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<FormValidationErrors>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [infoMessage, setInfoMessage] = useState<string | null>(null);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }));
+    if (errors[name] || errors.general) {
+      setErrors((prev) => ({ ...prev, [name]: '', general: '' }));
     }
   };
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: FormValidationErrors = {};
 
@@ -40,24 +42,25 @@ export const LoginScreen: React.FC = () => {
       return;
     }
 
-    // Phase 1: Visual validation feedback without active backend auth
     setIsLoading(true);
-    setInfoMessage(null);
-    setTimeout(() => {
-      setIsLoading(false);
-      setInfoMessage(
-        'Phase 1 UI verified! Real authentication will be connected in Phase 2.'
-      );
-    }, 800);
+    setErrors({});
+    const result = await login(formData.identifier, formData.password);
+    setIsLoading(false);
+
+    if (!result.success) {
+      setErrors({ general: result.error || 'Failed to sign in. Please verify your credentials.' });
+    }
   };
 
-  const handleGoogleClick = () => {
-    setInfoMessage('Google OAuth provider will be connected in Phase 2.');
-  };
+  const handleGoogleClick = async () => {
+    setIsGoogleLoading(true);
+    setErrors({});
+    const result = await loginWithGoogle();
+    setIsGoogleLoading(false);
 
-  const handleForgotPassword = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setInfoMessage('Password recovery workflow will be connected in Phase 2.');
+    if (!result.success) {
+      setErrors({ general: result.error || 'Google authentication could not be completed.' });
+    }
   };
 
   return (
@@ -115,20 +118,24 @@ export const LoginScreen: React.FC = () => {
           </p>
         </div>
 
-        {/* Feedback message banner */}
-        {infoMessage && (
+        {/* General Error Banner */}
+        {errors.general && (
           <div
             style={{
-              background: 'rgba(99, 102, 241, 0.15)',
-              border: '1px solid rgba(99, 102, 241, 0.35)',
+              background: 'rgba(239, 68, 68, 0.15)',
+              border: '1px solid rgba(239, 68, 68, 0.35)',
               borderRadius: '12px',
               padding: '12px 14px',
               fontSize: '12.5px',
-              color: '#C7D2FE',
+              color: '#FCA5A5',
               lineHeight: 1.4,
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '8px',
             }}
           >
-            {infoMessage}
+            <AlertCircle size={16} color="#F87171" style={{ flexShrink: 0, marginTop: '2px' }} />
+            <span>{errors.general}</span>
           </div>
         )}
 
@@ -146,6 +153,7 @@ export const LoginScreen: React.FC = () => {
             error={errors.identifier}
             leadingIcon={<User size={19} />}
             autoComplete="username"
+            disabled={isLoading || isGoogleLoading}
           />
 
           {/* Password Input with Visibility Toggle */}
@@ -159,6 +167,7 @@ export const LoginScreen: React.FC = () => {
               error={errors.password}
               leadingIcon={<Lock size={19} />}
               autoComplete="current-password"
+              disabled={isLoading || isGoogleLoading}
               trailingIcon={
                 <button
                   type="button"
@@ -178,9 +187,8 @@ export const LoginScreen: React.FC = () => {
 
             {/* Forgot Password Link */}
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
-              <button
-                type="button"
-                onClick={handleForgotPassword}
+              <Link
+                to="/forgot-password"
                 style={{
                   fontSize: '12.5px',
                   fontWeight: 600,
@@ -192,13 +200,18 @@ export const LoginScreen: React.FC = () => {
                 }}
               >
                 Forgot Password?
-              </button>
+              </Link>
             </div>
           </div>
 
           {/* Primary LOGIN Button */}
           <div style={{ marginTop: '8px' }}>
-            <Button type="submit" variant="primary" isLoading={isLoading}>
+            <Button
+              type="submit"
+              variant="primary"
+              isLoading={isLoading}
+              disabled={isLoading || isGoogleLoading}
+            >
               LOGIN
             </Button>
           </div>
@@ -237,6 +250,8 @@ export const LoginScreen: React.FC = () => {
           type="button"
           variant="google"
           onClick={handleGoogleClick}
+          isLoading={isGoogleLoading}
+          disabled={isLoading || isGoogleLoading}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             {/* Google G Logo SVG */}

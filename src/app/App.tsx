@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AppRoutes } from './routes';
+import { AuthProvider } from '../features/auth/AuthContext';
 import { ErrorBoundary } from '../components/feedback/ErrorBoundary';
 import { WifiOff } from 'lucide-react';
 
@@ -23,32 +24,34 @@ export const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <BrowserRouter>
-        {/* Offline notification banner */}
-        {!isOnline && (
-          <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              zIndex: 9999,
-              background: '#EF4444',
-              color: '#FFFFFF',
-              fontSize: '12px',
-              fontWeight: 600,
-              padding: '6px 16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-            }}
-          >
-            <WifiOff size={16} />
-            <span>You are currently offline. Running on EduCamp offline shell.</span>
-          </div>
-        )}
+        <AuthProvider>
+          {/* Offline notification banner */}
+          {!isOnline && (
+            <div
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                zIndex: 9999,
+                background: '#EF4444',
+                color: '#FFFFFF',
+                fontSize: '12px',
+                fontWeight: 600,
+                padding: '6px 16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+              }}
+            >
+              <WifiOff size={16} />
+              <span>You are currently offline. Running on EduCamp offline shell.</span>
+            </div>
+          )}
 
-        <AppRoutes />
+          <AppRoutes />
+        </AuthProvider>
       </BrowserRouter>
     </ErrorBoundary>
   );
