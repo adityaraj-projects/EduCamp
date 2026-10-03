@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import { LogOut, ShieldCheck, UserCheck, KeyRound, Sparkles } from 'lucide-react';
+import { LogOut, ShieldCheck, UserCheck, KeyRound, Sparkles, BookOpen } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 
 export const AuthenticatedPlaceholder: React.FC = () => {
@@ -214,6 +214,31 @@ export const AuthenticatedPlaceholder: React.FC = () => {
             }}
           >
             <span>OPEN FEES & LEDGER SYSTEM</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => navigate('/materials')}
+            style={{
+              width: '100%',
+              padding: '12px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)',
+              border: 'none',
+              color: '#FFFFFF',
+              fontSize: '13px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              boxShadow: '0 4px 15px rgba(59, 130, 246, 0.35)',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <BookOpen size={16} />
+            <span>OPEN STUDY MATERIALS</span>
           </button>
 
           {/* Secure Logout CTA */}

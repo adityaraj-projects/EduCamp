@@ -9,6 +9,7 @@ import { AuthCallback } from '../features/auth/AuthCallback';
 import { AuthenticatedPlaceholder } from '../features/auth/AuthenticatedPlaceholder';
 import { AttendanceScreen } from '../features/attendance/AttendanceScreen';
 import { FeesScreen } from '../features/fees/FeesScreen';
+import { MaterialsScreen } from '../features/materials/MaterialsScreen';
 import { ProtectedRoute } from '../components/layout/ProtectedRoute';
 import { PublicOnlyRoute } from '../components/layout/PublicOnlyRoute';
 
@@ -76,6 +77,16 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <FeesScreen />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Phase 7 Study Materials System */}
+      <Route
+        path="/materials"
+        element={
+          <ProtectedRoute>
+            <MaterialsScreen />
           </ProtectedRoute>
         }
       />

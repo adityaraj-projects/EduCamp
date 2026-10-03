@@ -1081,6 +1081,119 @@ export interface Database {
           }
         ];
       };
+      study_materials: {
+        Row: {
+          id: string;
+          title: string;
+          description: string | null;
+          material_type: 'notes' | 'chapter' | 'worksheet' | 'question_paper' | 'practice' | 'other';
+          academic_year_id: string;
+          board_id: string;
+          class_level_id: string;
+          stream_id: string | null;
+          subject_id: string;
+          batch_id: string | null;
+          file_name: string;
+          storage_path: string;
+          mime_type: string;
+          file_size_bytes: number;
+          uploader_profile_id: string;
+          status: 'active' | 'archived';
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          description?: string | null;
+          material_type: 'notes' | 'chapter' | 'worksheet' | 'question_paper' | 'practice' | 'other';
+          academic_year_id: string;
+          board_id: string;
+          class_level_id: string;
+          stream_id?: string | null;
+          subject_id: string;
+          batch_id?: string | null;
+          file_name: string;
+          storage_path: string;
+          mime_type?: string;
+          file_size_bytes: number;
+          uploader_profile_id: string;
+          status?: 'active' | 'archived';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          description?: string | null;
+          material_type?: 'notes' | 'chapter' | 'worksheet' | 'question_paper' | 'practice' | 'other';
+          academic_year_id?: string;
+          board_id?: string;
+          class_level_id?: string;
+          stream_id?: string | null;
+          subject_id?: string;
+          batch_id?: string | null;
+          file_name?: string;
+          storage_path?: string;
+          mime_type?: string;
+          file_size_bytes?: number;
+          uploader_profile_id?: string;
+          status?: 'active' | 'archived';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "study_materials_academic_year_id_fkey";
+            columns: ["academic_year_id"];
+            isOneToOne: false;
+            referencedRelation: "academic_years";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "study_materials_board_id_fkey";
+            columns: ["board_id"];
+            isOneToOne: false;
+            referencedRelation: "boards";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "study_materials_class_level_id_fkey";
+            columns: ["class_level_id"];
+            isOneToOne: false;
+            referencedRelation: "class_levels";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "study_materials_stream_id_fkey";
+            columns: ["stream_id"];
+            isOneToOne: false;
+            referencedRelation: "streams";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "study_materials_subject_id_fkey";
+            columns: ["subject_id"];
+            isOneToOne: false;
+            referencedRelation: "subjects";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "study_materials_batch_id_fkey";
+            columns: ["batch_id"];
+            isOneToOne: false;
+            referencedRelation: "batches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "study_materials_uploader_profile_id_fkey";
+            columns: ["uploader_profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -1090,6 +1203,20 @@ export interface Database {
       };
       is_teacher_assigned_to_batch: {
         Args: { p_batch_id: string; p_subject_id?: string | null };
+        Returns: boolean;
+      };
+      is_teacher_authorized_for_material: {
+        Args: {
+          p_academic_year_id: string;
+          p_board_id: string;
+          p_class_level_id: string;
+          p_subject_id: string;
+          p_batch_id?: string | null;
+        };
+        Returns: boolean;
+      };
+      can_student_access_material: {
+        Args: { p_material_id: string };
         Returns: boolean;
       };
       generate_admission_number: {
