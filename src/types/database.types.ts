@@ -369,12 +369,269 @@ export interface Database {
           }
         ];
       };
+      students: {
+        Row: {
+          id: string;
+          profile_id: string;
+          admission_number: string;
+          date_of_birth: string | null;
+          gender: 'male' | 'female' | 'other' | null;
+          guardian_name: string | null;
+          guardian_phone: string | null;
+          guardian_relation: string | null;
+          emergency_contact: string | null;
+          address: string | null;
+          status: 'active' | 'inactive' | 'transferred' | 'completed';
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          profile_id: string;
+          admission_number: string;
+          date_of_birth?: string | null;
+          gender?: 'male' | 'female' | 'other' | null;
+          guardian_name?: string | null;
+          guardian_phone?: string | null;
+          guardian_relation?: string | null;
+          emergency_contact?: string | null;
+          address?: string | null;
+          status?: 'active' | 'inactive' | 'transferred' | 'completed';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          profile_id?: string;
+          admission_number?: string;
+          date_of_birth?: string | null;
+          gender?: 'male' | 'female' | 'other' | null;
+          guardian_name?: string | null;
+          guardian_phone?: string | null;
+          guardian_relation?: string | null;
+          emergency_contact?: string | null;
+          address?: string | null;
+          status?: 'active' | 'inactive' | 'transferred' | 'completed';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "students_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: true;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      teachers: {
+        Row: {
+          id: string;
+          profile_id: string;
+          employee_code: string;
+          joining_date: string | null;
+          designation: string | null;
+          qualification: string | null;
+          specialization: string | null;
+          status: 'active' | 'inactive' | 'left';
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          profile_id: string;
+          employee_code: string;
+          joining_date?: string | null;
+          designation?: string | null;
+          qualification?: string | null;
+          specialization?: string | null;
+          status?: 'active' | 'inactive' | 'left';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          profile_id?: string;
+          employee_code?: string;
+          joining_date?: string | null;
+          designation?: string | null;
+          qualification?: string | null;
+          specialization?: string | null;
+          status?: 'active' | 'inactive' | 'left';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "teachers_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: true;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      student_enrollments: {
+        Row: {
+          id: string;
+          student_id: string;
+          academic_year_id: string;
+          board_class_id: string;
+          stream_id: string | null;
+          batch_id: string;
+          roll_number: string | null;
+          enrollment_date: string;
+          status: 'enrolled' | 'promoted' | 'transferred' | 'dropped' | 'completed';
+          is_current: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          student_id: string;
+          academic_year_id: string;
+          board_class_id: string;
+          stream_id?: string | null;
+          batch_id: string;
+          roll_number?: string | null;
+          enrollment_date?: string;
+          status?: 'enrolled' | 'promoted' | 'transferred' | 'dropped' | 'completed';
+          is_current?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          student_id?: string;
+          academic_year_id?: string;
+          board_class_id?: string;
+          stream_id?: string | null;
+          batch_id?: string;
+          roll_number?: string | null;
+          enrollment_date?: string;
+          status?: 'enrolled' | 'promoted' | 'transferred' | 'dropped' | 'completed';
+          is_current?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "student_enrollments_student_id_fkey";
+            columns: ["student_id"];
+            isOneToOne: false;
+            referencedRelation: "students";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "student_enrollments_academic_year_id_fkey";
+            columns: ["academic_year_id"];
+            isOneToOne: false;
+            referencedRelation: "academic_years";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "student_enrollments_board_class_id_fkey";
+            columns: ["board_class_id"];
+            isOneToOne: false;
+            referencedRelation: "board_classes";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "student_enrollments_stream_id_fkey";
+            columns: ["stream_id"];
+            isOneToOne: false;
+            referencedRelation: "streams";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "student_enrollments_batch_id_fkey";
+            columns: ["batch_id"];
+            isOneToOne: false;
+            referencedRelation: "batches";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      teacher_assignments: {
+        Row: {
+          id: string;
+          teacher_id: string;
+          academic_year_id: string;
+          batch_id: string;
+          subject_id: string;
+          role: 'primary_teacher' | 'assistant_teacher' | 'substitute';
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          teacher_id: string;
+          academic_year_id: string;
+          batch_id: string;
+          subject_id: string;
+          role?: 'primary_teacher' | 'assistant_teacher' | 'substitute';
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          teacher_id?: string;
+          academic_year_id?: string;
+          batch_id?: string;
+          subject_id?: string;
+          role?: 'primary_teacher' | 'assistant_teacher' | 'substitute';
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "teacher_assignments_teacher_id_fkey";
+            columns: ["teacher_id"];
+            isOneToOne: false;
+            referencedRelation: "teachers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "teacher_assignments_academic_year_id_fkey";
+            columns: ["academic_year_id"];
+            isOneToOne: false;
+            referencedRelation: "academic_years";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "teacher_assignments_batch_id_fkey";
+            columns: ["batch_id"];
+            isOneToOne: false;
+            referencedRelation: "batches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "teacher_assignments_subject_id_fkey";
+            columns: ["subject_id"];
+            isOneToOne: false;
+            referencedRelation: "subjects";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
       is_admin: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
+      };
+      generate_admission_number: {
+        Args: { p_prefix?: string };
+        Returns: string;
+      };
+      generate_employee_code: {
+        Args: { p_prefix?: string };
+        Returns: string;
       };
     };
     Enums: {
