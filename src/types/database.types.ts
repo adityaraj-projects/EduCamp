@@ -1406,6 +1406,244 @@ export interface Database {
           }
         ];
       };
+      exams: {
+        Row: {
+          id: string;
+          title: string;
+          description: string | null;
+          exam_type: 'unit_test' | 'class_test' | 'monthly_test' | 'midterm' | 'terminal' | 'final' | 'mock_test' | 'other';
+          academic_year_id: string;
+          board_id: string;
+          class_level_id: string;
+          stream_id: string | null;
+          batch_id: string | null;
+          exam_date: string;
+          start_time: string | null;
+          end_time: string | null;
+          status: 'draft' | 'scheduled' | 'ongoing' | 'completed' | 'published' | 'archived';
+          created_by: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          description?: string | null;
+          exam_type: 'unit_test' | 'class_test' | 'monthly_test' | 'midterm' | 'terminal' | 'final' | 'mock_test' | 'other';
+          academic_year_id: string;
+          board_id: string;
+          class_level_id: string;
+          stream_id?: string | null;
+          batch_id?: string | null;
+          exam_date: string;
+          start_time?: string | null;
+          end_time?: string | null;
+          status?: 'draft' | 'scheduled' | 'ongoing' | 'completed' | 'published' | 'archived';
+          created_by: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          description?: string | null;
+          exam_type?: 'unit_test' | 'class_test' | 'monthly_test' | 'midterm' | 'terminal' | 'final' | 'mock_test' | 'other';
+          academic_year_id?: string;
+          board_id?: string;
+          class_level_id?: string;
+          stream_id?: string | null;
+          batch_id?: string | null;
+          exam_date?: string;
+          start_time?: string | null;
+          end_time?: string | null;
+          status?: 'draft' | 'scheduled' | 'ongoing' | 'completed' | 'published' | 'archived';
+          created_by?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "exams_academic_year_id_fkey";
+            columns: ["academic_year_id"];
+            isOneToOne: false;
+            referencedRelation: "academic_years";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "exams_board_id_fkey";
+            columns: ["board_id"];
+            isOneToOne: false;
+            referencedRelation: "boards";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "exams_class_level_id_fkey";
+            columns: ["class_level_id"];
+            isOneToOne: false;
+            referencedRelation: "class_levels";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "exams_stream_id_fkey";
+            columns: ["stream_id"];
+            isOneToOne: false;
+            referencedRelation: "streams";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "exams_batch_id_fkey";
+            columns: ["batch_id"];
+            isOneToOne: false;
+            referencedRelation: "batches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "exams_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      exam_subjects: {
+        Row: {
+          id: string;
+          exam_id: string;
+          subject_id: string;
+          max_marks: number;
+          passing_marks: number;
+          subject_date: string | null;
+          start_time: string | null;
+          end_time: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          exam_id: string;
+          subject_id: string;
+          max_marks: number;
+          passing_marks: number;
+          subject_date?: string | null;
+          start_time?: string | null;
+          end_time?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          exam_id?: string;
+          subject_id?: string;
+          max_marks?: number;
+          passing_marks?: number;
+          subject_date?: string | null;
+          start_time?: string | null;
+          end_time?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "exam_subjects_exam_id_fkey";
+            columns: ["exam_id"];
+            isOneToOne: false;
+            referencedRelation: "exams";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "exam_subjects_subject_id_fkey";
+            columns: ["subject_id"];
+            isOneToOne: false;
+            referencedRelation: "subjects";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      exam_results: {
+        Row: {
+          id: string;
+          exam_id: string;
+          exam_subject_id: string;
+          student_id: string;
+          enrollment_id: string | null;
+          attendance_status: 'present' | 'absent' | 'exempted';
+          obtained_marks: number | null;
+          result_status: 'pending' | 'evaluated' | 'passed' | 'failed' | 'absent' | 'exempted';
+          remarks: string | null;
+          evaluated_by: string | null;
+          evaluated_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          exam_id: string;
+          exam_subject_id: string;
+          student_id: string;
+          enrollment_id?: string | null;
+          attendance_status?: 'present' | 'absent' | 'exempted';
+          obtained_marks?: number | null;
+          result_status?: 'pending' | 'evaluated' | 'passed' | 'failed' | 'absent' | 'exempted';
+          remarks?: string | null;
+          evaluated_by?: string | null;
+          evaluated_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          exam_id?: string;
+          exam_subject_id?: string;
+          student_id?: string;
+          enrollment_id?: string | null;
+          attendance_status?: 'present' | 'absent' | 'exempted';
+          obtained_marks?: number | null;
+          result_status?: 'pending' | 'evaluated' | 'passed' | 'failed' | 'absent' | 'exempted';
+          remarks?: string | null;
+          evaluated_by?: string | null;
+          evaluated_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "exam_results_exam_id_fkey";
+            columns: ["exam_id"];
+            isOneToOne: false;
+            referencedRelation: "exams";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "exam_results_exam_subject_id_fkey";
+            columns: ["exam_subject_id"];
+            isOneToOne: false;
+            referencedRelation: "exam_subjects";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "exam_results_student_id_fkey";
+            columns: ["student_id"];
+            isOneToOne: false;
+            referencedRelation: "students";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "exam_results_enrollment_id_fkey";
+            columns: ["enrollment_id"];
+            isOneToOne: false;
+            referencedRelation: "student_enrollments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "exam_results_evaluated_by_fkey";
+            columns: ["evaluated_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -1443,6 +1681,19 @@ export interface Database {
       };
       can_student_access_assignment: {
         Args: { p_assignment_id: string };
+        Returns: boolean;
+      };
+      is_teacher_authorized_for_exam: {
+        Args: {
+          p_academic_year_id: string;
+          p_board_id: string;
+          p_class_level_id: string;
+          p_batch_id?: string | null;
+        };
+        Returns: boolean;
+      };
+      can_student_access_exam: {
+        Args: { p_exam_id: string };
         Returns: boolean;
       };
       generate_admission_number: {

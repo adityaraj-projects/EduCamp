@@ -11,6 +11,7 @@ import { AttendanceScreen } from '../features/attendance/AttendanceScreen';
 import { FeesScreen } from '../features/fees/FeesScreen';
 import { MaterialsScreen } from '../features/materials/MaterialsScreen';
 import { AssignmentsScreen } from '../features/assignments/AssignmentsScreen';
+import { ExamsScreen } from '../features/exams/ExamsScreen';
 import { ProtectedRoute } from '../components/layout/ProtectedRoute';
 import { PublicOnlyRoute } from '../components/layout/PublicOnlyRoute';
 
@@ -98,6 +99,16 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <AssignmentsScreen />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Phase 9 Exam & Result Management System */}
+      <Route
+        path="/exams"
+        element={
+          <ProtectedRoute>
+            <ExamsScreen />
           </ProtectedRoute>
         }
       />

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import { LogOut, ShieldCheck, UserCheck, KeyRound, Sparkles, BookOpen, FileCheck } from 'lucide-react';
+import { LogOut, ShieldCheck, UserCheck, KeyRound, Sparkles, BookOpen, FileCheck, Award } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 
 export const AuthenticatedPlaceholder: React.FC = () => {
@@ -264,6 +264,31 @@ export const AuthenticatedPlaceholder: React.FC = () => {
           >
             <FileCheck size={16} />
             <span>OPEN ASSIGNMENTS & HOMEWORK</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => navigate('/exams')}
+            style={{
+              width: '100%',
+              padding: '12px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)',
+              border: 'none',
+              color: '#FFFFFF',
+              fontSize: '13px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              boxShadow: '0 4px 15px rgba(99, 102, 241, 0.35)',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <Award size={16} />
+            <span>OPEN EXAMS & RESULTS</span>
           </button>
 
           {/* Secure Logout CTA */}
