@@ -1,0 +1,139 @@
+@import './tokens.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-midnight-deep);
+  color: var(--text-white);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Watermark Pattern Background (Preserving the educational icons from native UI) */
+.educamp-watermark-bg {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background: radial-gradient(circle at 50% 20%, #1D1548 0%, var(--bg-midnight-deep) 100%);
+  overflow-x: hidden;
+}
+
+.educamp-watermark-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.035) 0%, transparent 20%),
+    radial-gradient(circle at 85% 25%, rgba(255, 255, 255, 0.035) 0%, transparent 25%),
+    radial-gradient(circle at 10% 70%, rgba(255, 255, 255, 0.03) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 25%);
+  z-index: 1;
+}
+
+/* Floating educational watermark icons */
+.watermark-icon {
+  position: absolute;
+  opacity: 0.07;
+  color: #FFFFFF;
+  pointer-events: none;
+  z-index: 1;
+  user-select: none;
+}
+
+/* Mobile-First Layout Container */
+.auth-viewport-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .auth-viewport-wrapper {
+    padding: 24px 16px;
+  }
+}
+
+.auth-mobile-container {
+  width: 100%;
+  max-width: 440px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px 24px;
+  position: relative;
+}
+
+@media (min-width: 640px) {
+  .auth-mobile-container {
+    min-height: auto;
+    border-radius: var(--radius-lg);
+    background: rgba(22, 17, 58, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    padding: 40px 32px;
+  }
+}
+
+/* Typography Helpers */
+.font-display {
+  font-family: var(--font-display);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: none;
+}
+
+input, select {
+  font-family: inherit;
+  outline: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
