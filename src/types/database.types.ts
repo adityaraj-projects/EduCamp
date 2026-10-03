@@ -1644,6 +1644,217 @@ export interface Database {
           }
         ];
       };
+      announcements: {
+        Row: {
+          id: string;
+          title: string;
+          body: string;
+          priority: 'normal' | 'important' | 'urgent';
+          status: 'draft' | 'scheduled' | 'published' | 'expired' | 'archived';
+          target_role: 'all' | 'students' | 'teachers';
+          published_at: string | null;
+          expires_at: string | null;
+          created_by: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          body: string;
+          priority?: 'normal' | 'important' | 'urgent';
+          status?: 'draft' | 'scheduled' | 'published' | 'expired' | 'archived';
+          target_role?: 'all' | 'students' | 'teachers';
+          published_at?: string | null;
+          expires_at?: string | null;
+          created_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          body?: string;
+          priority?: 'normal' | 'important' | 'urgent';
+          status?: 'draft' | 'scheduled' | 'published' | 'expired' | 'archived';
+          target_role?: 'all' | 'students' | 'teachers';
+          published_at?: string | null;
+          expires_at?: string | null;
+          created_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "announcements_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      announcement_targets: {
+        Row: {
+          id: string;
+          announcement_id: string;
+          academic_year_id: string | null;
+          board_id: string | null;
+          class_level_id: string | null;
+          stream_id: string | null;
+          batch_id: string | null;
+          subject_id: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          announcement_id: string;
+          academic_year_id?: string | null;
+          board_id?: string | null;
+          class_level_id?: string | null;
+          stream_id?: string | null;
+          batch_id?: string | null;
+          subject_id?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          announcement_id?: string;
+          academic_year_id?: string | null;
+          board_id?: string | null;
+          class_level_id?: string | null;
+          stream_id?: string | null;
+          batch_id?: string | null;
+          subject_id?: string | null;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "announcement_targets_announcement_id_fkey";
+            columns: ["announcement_id"];
+            isOneToOne: false;
+            referencedRelation: "announcements";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "announcement_targets_board_id_fkey";
+            columns: ["board_id"];
+            isOneToOne: false;
+            referencedRelation: "boards";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "announcement_targets_class_level_id_fkey";
+            columns: ["class_level_id"];
+            isOneToOne: false;
+            referencedRelation: "class_levels";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "announcement_targets_batch_id_fkey";
+            columns: ["batch_id"];
+            isOneToOne: false;
+            referencedRelation: "batches";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      notification_reads: {
+        Row: {
+          id: string;
+          user_id: string;
+          announcement_id: string;
+          read_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          announcement_id: string;
+          read_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          announcement_id?: string;
+          read_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "notification_reads_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "notification_reads_announcement_id_fkey";
+            columns: ["announcement_id"];
+            isOneToOne: false;
+            referencedRelation: "announcements";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      notifications: {
+        Row: {
+          id: string;
+          user_id: string;
+          announcement_id: string | null;
+          notification_type: 'announcement' | 'study_material' | 'assignment' | 'assignment_due' | 'exam' | 'result' | 'system';
+          title: string;
+          body: string | null;
+          priority: 'normal' | 'important' | 'urgent';
+          action_url: string | null;
+          read_at: string | null;
+          expires_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          announcement_id?: string | null;
+          notification_type: 'announcement' | 'study_material' | 'assignment' | 'assignment_due' | 'exam' | 'result' | 'system';
+          title: string;
+          body?: string | null;
+          priority?: 'normal' | 'important' | 'urgent';
+          action_url?: string | null;
+          read_at?: string | null;
+          expires_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          announcement_id?: string | null;
+          notification_type?: 'announcement' | 'study_material' | 'assignment' | 'assignment_due' | 'exam' | 'result' | 'system';
+          title?: string;
+          body?: string | null;
+          priority?: 'normal' | 'important' | 'urgent';
+          action_url?: string | null;
+          read_at?: string | null;
+          expires_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "notifications_announcement_id_fkey";
+            columns: ["announcement_id"];
+            isOneToOne: false;
+            referencedRelation: "announcements";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -1742,6 +1953,29 @@ export interface Database {
           p_academic_year_id?: string | null;
         };
         Returns: Json;
+      };
+      is_user_eligible_for_announcement: {
+        Args: {
+          p_announcement_id: string;
+          p_user_id: string;
+        };
+        Returns: boolean;
+      };
+      is_teacher_authorized_for_target: {
+        Args: {
+          p_user_id: string;
+          p_board_id: string;
+          p_class_level_id: string;
+          p_batch_id?: string | null;
+          p_subject_id?: string | null;
+        };
+        Returns: boolean;
+      };
+      get_unread_notification_count: {
+        Args: {
+          p_user_id: string;
+        };
+        Returns: number;
       };
     };
     Enums: {

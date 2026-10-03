@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import { LogOut, ShieldCheck, UserCheck, KeyRound, Sparkles, BookOpen, FileCheck, Award } from 'lucide-react';
+import { LogOut, ShieldCheck, UserCheck, KeyRound, Sparkles, BookOpen, FileCheck, Award, Bell } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
+import { NotificationBell } from '../notifications/NotificationBell';
 
 export const AuthenticatedPlaceholder: React.FC = () => {
   const navigate = useNavigate();
@@ -60,6 +61,11 @@ export const AuthenticatedPlaceholder: React.FC = () => {
           boxSizing: 'border-box',
         }}
       >
+        {/* Top Action Bar with Notification Bell */}
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', marginBottom: '-12px' }}>
+          <NotificationBell />
+        </div>
+
         {/* Emblem Badge */}
         <div
           style={{
@@ -290,6 +296,58 @@ export const AuthenticatedPlaceholder: React.FC = () => {
             <Award size={16} />
             <span>OPEN EXAMS & RESULTS</span>
           </button>
+
+          <button
+            type="button"
+            onClick={() => navigate('/notifications')}
+            style={{
+              width: '100%',
+              padding: '12px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%)',
+              border: 'none',
+              color: '#FFFFFF',
+              fontSize: '13px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              boxShadow: '0 4px 15px rgba(59, 130, 246, 0.35)',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <Bell size={16} />
+            <span>OPEN NOTIFICATION CENTER</span>
+          </button>
+
+          {(role === 'admin' || role === 'teacher') && (
+            <button
+              type="button"
+              onClick={() => navigate('/announcements')}
+              style={{
+                width: '100%',
+                padding: '12px',
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%)',
+                border: 'none',
+                color: '#FFFFFF',
+                fontSize: '13px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 15px rgba(139, 92, 246, 0.35)',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <Sparkles size={16} />
+              <span>MANAGE ANNOUNCEMENTS</span>
+            </button>
+          )}
 
           {/* Secure Logout CTA */}
           <Button

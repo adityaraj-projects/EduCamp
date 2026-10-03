@@ -12,6 +12,8 @@ import { FeesScreen } from '../features/fees/FeesScreen';
 import { MaterialsScreen } from '../features/materials/MaterialsScreen';
 import { AssignmentsScreen } from '../features/assignments/AssignmentsScreen';
 import { ExamsScreen } from '../features/exams/ExamsScreen';
+import { NotificationCenterScreen } from '../features/notifications/NotificationCenterScreen';
+import { AnnouncementsScreen } from '../features/notifications/AnnouncementsScreen';
 import { ProtectedRoute } from '../components/layout/ProtectedRoute';
 import { PublicOnlyRoute } from '../components/layout/PublicOnlyRoute';
 
@@ -109,6 +111,24 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <ExamsScreen />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Phase 10 Communications & Notification System */}
+      <Route
+        path="/notifications"
+        element={
+          <ProtectedRoute>
+            <NotificationCenterScreen />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/announcements"
+        element={
+          <ProtectedRoute>
+            <AnnouncementsScreen />
           </ProtectedRoute>
         }
       />
