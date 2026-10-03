@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-10-03T17:21:57.309Z",
+  "studentCount": 500,
+  "teacherCount": 15,
+  "boards": [
+    "CBSE",
+    "ICSE",
+    "BSEB"
+  ],
+  "classes": [
+    9,
+    10,
+    11,
+    12
+  ],
+  "subjects": [
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "BIO",
+    "ENG"
+  ]
+}
