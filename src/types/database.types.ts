@@ -738,6 +738,349 @@ export interface Database {
           }
         ];
       };
+      fee_categories: {
+        Row: {
+          id: string;
+          code: string;
+          name: string;
+          description: string | null;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          code: string;
+          name: string;
+          description?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          code?: string;
+          name?: string;
+          description?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      fee_structures: {
+        Row: {
+          id: string;
+          academic_year_id: string;
+          board_class_id: string;
+          stream_id: string | null;
+          name: string;
+          description: string | null;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          academic_year_id: string;
+          board_class_id: string;
+          stream_id?: string | null;
+          name: string;
+          description?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          academic_year_id?: string;
+          board_class_id?: string;
+          stream_id?: string | null;
+          name?: string;
+          description?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fee_structures_academic_year_id_fkey";
+            columns: ["academic_year_id"];
+            isOneToOne: false;
+            referencedRelation: "academic_years";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fee_structures_board_class_id_fkey";
+            columns: ["board_class_id"];
+            isOneToOne: false;
+            referencedRelation: "board_classes";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fee_structures_stream_id_fkey";
+            columns: ["stream_id"];
+            isOneToOne: false;
+            referencedRelation: "streams";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      fee_structure_items: {
+        Row: {
+          id: string;
+          fee_structure_id: string;
+          fee_category_id: string;
+          amount: number;
+          frequency: 'one_time' | 'monthly' | 'quarterly' | 'half_yearly' | 'yearly';
+          is_optional: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          fee_structure_id: string;
+          fee_category_id: string;
+          amount: number;
+          frequency: 'one_time' | 'monthly' | 'quarterly' | 'half_yearly' | 'yearly';
+          is_optional?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          fee_structure_id?: string;
+          fee_category_id?: string;
+          amount?: number;
+          frequency?: 'one_time' | 'monthly' | 'quarterly' | 'half_yearly' | 'yearly';
+          is_optional?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fee_structure_items_fee_structure_id_fkey";
+            columns: ["fee_structure_id"];
+            isOneToOne: false;
+            referencedRelation: "fee_structures";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fee_structure_items_fee_category_id_fkey";
+            columns: ["fee_category_id"];
+            isOneToOne: false;
+            referencedRelation: "fee_categories";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      student_fee_assignments: {
+        Row: {
+          id: string;
+          enrollment_id: string;
+          fee_structure_id: string;
+          discount_amount: number;
+          discount_reason: string | null;
+          custom_notes: string | null;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          enrollment_id: string;
+          fee_structure_id: string;
+          discount_amount?: number;
+          discount_reason?: string | null;
+          custom_notes?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          enrollment_id?: string;
+          fee_structure_id?: string;
+          discount_amount?: number;
+          discount_reason?: string | null;
+          custom_notes?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "student_fee_assignments_enrollment_id_fkey";
+            columns: ["enrollment_id"];
+            isOneToOne: false;
+            referencedRelation: "student_enrollments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "student_fee_assignments_fee_structure_id_fkey";
+            columns: ["fee_structure_id"];
+            isOneToOne: false;
+            referencedRelation: "fee_structures";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      fee_obligations: {
+        Row: {
+          id: string;
+          enrollment_id: string;
+          student_id: string;
+          fee_category_id: string;
+          academic_year_id: string;
+          fee_assignment_id: string | null;
+          title: string;
+          amount_due: number;
+          amount_paid: number;
+          due_date: string;
+          billing_period_start: string | null;
+          billing_period_end: string | null;
+          status: 'unpaid' | 'partial' | 'paid' | 'waived' | 'overdue';
+          remarks: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          enrollment_id: string;
+          student_id: string;
+          fee_category_id: string;
+          academic_year_id: string;
+          fee_assignment_id?: string | null;
+          title: string;
+          amount_due: number;
+          amount_paid?: number;
+          due_date: string;
+          billing_period_start?: string | null;
+          billing_period_end?: string | null;
+          status?: 'unpaid' | 'partial' | 'paid' | 'waived' | 'overdue';
+          remarks?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          enrollment_id?: string;
+          student_id?: string;
+          fee_category_id?: string;
+          academic_year_id?: string;
+          fee_assignment_id?: string | null;
+          title?: string;
+          amount_due?: number;
+          amount_paid?: number;
+          due_date?: string;
+          billing_period_start?: string | null;
+          billing_period_end?: string | null;
+          status?: 'unpaid' | 'partial' | 'paid' | 'waived' | 'overdue';
+          remarks?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fee_obligations_enrollment_id_fkey";
+            columns: ["enrollment_id"];
+            isOneToOne: false;
+            referencedRelation: "student_enrollments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fee_obligations_student_id_fkey";
+            columns: ["student_id"];
+            isOneToOne: false;
+            referencedRelation: "students";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fee_obligations_fee_category_id_fkey";
+            columns: ["fee_category_id"];
+            isOneToOne: false;
+            referencedRelation: "fee_categories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fee_obligations_academic_year_id_fkey";
+            columns: ["academic_year_id"];
+            isOneToOne: false;
+            referencedRelation: "academic_years";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fee_obligations_fee_assignment_id_fkey";
+            columns: ["fee_assignment_id"];
+            isOneToOne: false;
+            referencedRelation: "student_fee_assignments";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      payments: {
+        Row: {
+          id: string;
+          obligation_id: string;
+          student_id: string;
+          amount: number;
+          payment_date: string;
+          payment_method: 'cash' | 'upi' | 'bank_transfer' | 'cheque' | 'card' | 'other';
+          reference_number: string | null;
+          receipt_number: string;
+          receipt_metadata: Json;
+          notes: string | null;
+          created_by: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          obligation_id: string;
+          student_id: string;
+          amount: number;
+          payment_date?: string;
+          payment_method: 'cash' | 'upi' | 'bank_transfer' | 'cheque' | 'card' | 'other';
+          reference_number?: string | null;
+          receipt_number: string;
+          receipt_metadata?: Json;
+          notes?: string | null;
+          created_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          obligation_id?: string;
+          student_id?: string;
+          amount?: number;
+          payment_date?: string;
+          payment_method?: 'cash' | 'upi' | 'bank_transfer' | 'cheque' | 'card' | 'other';
+          reference_number?: string | null;
+          receipt_number?: string;
+          receipt_metadata?: Json;
+          notes?: string | null;
+          created_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "payments_obligation_id_fkey";
+            columns: ["obligation_id"];
+            isOneToOne: false;
+            referencedRelation: "fee_obligations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "payments_student_id_fkey";
+            columns: ["student_id"];
+            isOneToOne: false;
+            referencedRelation: "students";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -757,6 +1100,10 @@ export interface Database {
         Args: { p_prefix?: string };
         Returns: string;
       };
+      generate_receipt_number: {
+        Args: { p_prefix?: string };
+        Returns: string;
+      };
       submit_batch_attendance: {
         Args: {
           p_academic_year_id: string;
@@ -769,6 +1116,23 @@ export interface Database {
         Returns: Json;
       };
       get_student_attendance_summary: {
+        Args: {
+          p_student_id: string;
+          p_academic_year_id?: string | null;
+        };
+        Returns: Json;
+      };
+      record_fee_payment: {
+        Args: {
+          p_obligation_id: string;
+          p_amount: number;
+          p_payment_method: string;
+          p_reference_number?: string | null;
+          p_notes?: string | null;
+        };
+        Returns: Json;
+      };
+      get_student_fee_summary: {
         Args: {
           p_student_id: string;
           p_academic_year_id?: string | null;

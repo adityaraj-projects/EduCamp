@@ -166,14 +166,14 @@ export const AuthenticatedPlaceholder: React.FC = () => {
           </span>
         </div>
 
-        {/* Attendance Portal CTA */}
+        {/* Portal CTAs */}
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <button
             type="button"
             onClick={() => navigate('/attendance')}
             style={{
               width: '100%',
-              padding: '13px',
+              padding: '12px',
               borderRadius: '12px',
               background: 'linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%)',
               border: 'none',
@@ -190,6 +190,30 @@ export const AuthenticatedPlaceholder: React.FC = () => {
             }}
           >
             <span>OPEN ATTENDANCE SYSTEM</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => navigate('/fees')}
+            style={{
+              width: '100%',
+              padding: '12px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #10B981 0%, #3B82F6 100%)',
+              border: 'none',
+              color: '#FFFFFF',
+              fontSize: '13px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              boxShadow: '0 4px 15px rgba(16, 185, 129, 0.35)',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <span>OPEN FEES & LEDGER SYSTEM</span>
           </button>
 
           {/* Secure Logout CTA */}
