@@ -7,6 +7,7 @@ import { ForgotPasswordScreen } from '../features/auth/ForgotPasswordScreen';
 import { ResetPasswordScreen } from '../features/auth/ResetPasswordScreen';
 import { AuthCallback } from '../features/auth/AuthCallback';
 import { AuthenticatedPlaceholder } from '../features/auth/AuthenticatedPlaceholder';
+import { AttendanceScreen } from '../features/attendance/AttendanceScreen';
 import { ProtectedRoute } from '../components/layout/ProtectedRoute';
 import { PublicOnlyRoute } from '../components/layout/PublicOnlyRoute';
 
@@ -54,6 +55,16 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <AuthenticatedPlaceholder />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Phase 5 Attendance System */}
+      <Route
+        path="/attendance"
+        element={
+          <ProtectedRoute>
+            <AttendanceScreen />
           </ProtectedRoute>
         }
       />

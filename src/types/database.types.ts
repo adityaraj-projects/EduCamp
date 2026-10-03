@@ -618,11 +618,135 @@ export interface Database {
           }
         ];
       };
+      attendance_sessions: {
+        Row: {
+          id: string;
+          academic_year_id: string;
+          batch_id: string;
+          teacher_id: string;
+          subject_id: string | null;
+          attendance_date: string;
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          academic_year_id: string;
+          batch_id: string;
+          teacher_id: string;
+          subject_id?: string | null;
+          attendance_date: string;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          academic_year_id?: string;
+          batch_id?: string;
+          teacher_id?: string;
+          subject_id?: string | null;
+          attendance_date?: string;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "attendance_sessions_academic_year_id_fkey";
+            columns: ["academic_year_id"];
+            isOneToOne: false;
+            referencedRelation: "academic_years";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "attendance_sessions_batch_id_fkey";
+            columns: ["batch_id"];
+            isOneToOne: false;
+            referencedRelation: "batches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "attendance_sessions_teacher_id_fkey";
+            columns: ["teacher_id"];
+            isOneToOne: false;
+            referencedRelation: "teachers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "attendance_sessions_subject_id_fkey";
+            columns: ["subject_id"];
+            isOneToOne: false;
+            referencedRelation: "subjects";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      attendance_records: {
+        Row: {
+          id: string;
+          attendance_session_id: string;
+          enrollment_id: string;
+          student_id: string;
+          status: 'present' | 'absent' | 'late' | 'leave';
+          remarks: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          attendance_session_id: string;
+          enrollment_id: string;
+          student_id: string;
+          status: 'present' | 'absent' | 'late' | 'leave';
+          remarks?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          attendance_session_id?: string;
+          enrollment_id?: string;
+          student_id?: string;
+          status?: 'present' | 'absent' | 'late' | 'leave';
+          remarks?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "attendance_records_attendance_session_id_fkey";
+            columns: ["attendance_session_id"];
+            isOneToOne: false;
+            referencedRelation: "attendance_sessions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "attendance_records_enrollment_id_fkey";
+            columns: ["enrollment_id"];
+            isOneToOne: false;
+            referencedRelation: "student_enrollments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "attendance_records_student_id_fkey";
+            columns: ["student_id"];
+            isOneToOne: false;
+            referencedRelation: "students";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
       is_admin: {
         Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
+      is_teacher_assigned_to_batch: {
+        Args: { p_batch_id: string; p_subject_id?: string | null };
         Returns: boolean;
       };
       generate_admission_number: {
@@ -632,6 +756,24 @@ export interface Database {
       generate_employee_code: {
         Args: { p_prefix?: string };
         Returns: string;
+      };
+      submit_batch_attendance: {
+        Args: {
+          p_academic_year_id: string;
+          p_batch_id: string;
+          p_attendance_date: string;
+          p_subject_id?: string | null;
+          p_records: Json;
+          p_notes?: string | null;
+        };
+        Returns: Json;
+      };
+      get_student_attendance_summary: {
+        Args: {
+          p_student_id: string;
+          p_academic_year_id?: string | null;
+        };
+        Returns: Json;
       };
     };
     Enums: {

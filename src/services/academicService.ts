@@ -2,6 +2,7 @@ import { supabase } from '../lib/supabaseClient';
 import type {
   AcademicYear,
   Board,
+  Batch,
   ClassLevel,
   Stream,
   Subject,
@@ -142,6 +143,28 @@ export const academicService = {
       return [];
     }
     return data || [];
+  },
+
+  /**
+   * Fetch all active coaching batches for an academic session
+   */
+  async getAllActiveBatches(academicYearId?: string): Promise<Batch[]> {
+    let query = supabase
+      .from('batches')
+      .select('id, academic_year_id, board_class_id, stream_id, name, code, max_capacity, is_active, created_at, updated_at')
+      .eq('is_active', true)
+      .order('name', { ascending: true });
+
+    if (academicYearId) {
+      query = query.eq('academic_year_id', academicYearId);
+    }
+
+    const { data, error } = await query;
+    if (error) {
+      console.warn('[EduCamp AcademicService] Error fetching all batches:', error.message);
+      return [];
+    }
+    return (data || []) as unknown as Batch[];
   },
 
   /**

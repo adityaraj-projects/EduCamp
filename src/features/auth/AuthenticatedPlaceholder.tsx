@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { LogOut, ShieldCheck, UserCheck, KeyRound, Sparkles } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 
 export const AuthenticatedPlaceholder: React.FC = () => {
+  const navigate = useNavigate();
   const { user, profile, role, logout } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
@@ -164,16 +166,41 @@ export const AuthenticatedPlaceholder: React.FC = () => {
           </span>
         </div>
 
-        {/* Secure Logout CTA */}
-        <div style={{ width: '100%', marginTop: '8px' }}>
+        {/* Attendance Portal CTA */}
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <button
+            type="button"
+            onClick={() => navigate('/attendance')}
+            style={{
+              width: '100%',
+              padding: '13px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%)',
+              border: 'none',
+              color: '#FFFFFF',
+              fontSize: '13px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              boxShadow: '0 4px 15px rgba(236, 72, 153, 0.35)',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <span>OPEN ATTENDANCE SYSTEM</span>
+          </button>
+
+          {/* Secure Logout CTA */}
           <Button
             type="button"
-            variant="primary"
+            variant="ghost"
             onClick={handleLogout}
             isLoading={isLoggingOut}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-              <LogOut size={18} />
+              <LogOut size={16} />
               <span>SECURE LOGOUT</span>
             </div>
           </Button>
