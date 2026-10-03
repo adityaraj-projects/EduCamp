@@ -1194,6 +1194,218 @@ export interface Database {
           }
         ];
       };
+      assignments: {
+        Row: {
+          id: string;
+          title: string;
+          description: string | null;
+          academic_year_id: string;
+          board_id: string;
+          class_level_id: string;
+          stream_id: string | null;
+          subject_id: string;
+          batch_id: string | null;
+          teacher_id: string;
+          status: 'draft' | 'published' | 'closed' | 'archived';
+          due_at: string;
+          max_marks: number | null;
+          allow_late_submission: boolean;
+          attachment_path: string | null;
+          attachment_file_name: string | null;
+          attachment_file_size: number | null;
+          created_by: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          description?: string | null;
+          academic_year_id: string;
+          board_id: string;
+          class_level_id: string;
+          stream_id?: string | null;
+          subject_id: string;
+          batch_id?: string | null;
+          teacher_id: string;
+          status?: 'draft' | 'published' | 'closed' | 'archived';
+          due_at: string;
+          max_marks?: number | null;
+          allow_late_submission?: boolean;
+          attachment_path?: string | null;
+          attachment_file_name?: string | null;
+          attachment_file_size?: number | null;
+          created_by: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          description?: string | null;
+          academic_year_id?: string;
+          board_id?: string;
+          class_level_id?: string;
+          stream_id?: string | null;
+          subject_id?: string;
+          batch_id?: string | null;
+          teacher_id?: string;
+          status?: 'draft' | 'published' | 'closed' | 'archived';
+          due_at?: string;
+          max_marks?: number | null;
+          allow_late_submission?: boolean;
+          attachment_path?: string | null;
+          attachment_file_name?: string | null;
+          attachment_file_size?: number | null;
+          created_by?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "assignments_academic_year_id_fkey";
+            columns: ["academic_year_id"];
+            isOneToOne: false;
+            referencedRelation: "academic_years";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "assignments_board_id_fkey";
+            columns: ["board_id"];
+            isOneToOne: false;
+            referencedRelation: "boards";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "assignments_class_level_id_fkey";
+            columns: ["class_level_id"];
+            isOneToOne: false;
+            referencedRelation: "class_levels";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "assignments_stream_id_fkey";
+            columns: ["stream_id"];
+            isOneToOne: false;
+            referencedRelation: "streams";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "assignments_subject_id_fkey";
+            columns: ["subject_id"];
+            isOneToOne: false;
+            referencedRelation: "subjects";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "assignments_batch_id_fkey";
+            columns: ["batch_id"];
+            isOneToOne: false;
+            referencedRelation: "batches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "assignments_teacher_id_fkey";
+            columns: ["teacher_id"];
+            isOneToOne: false;
+            referencedRelation: "teachers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "assignments_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      assignment_submissions: {
+        Row: {
+          id: string;
+          assignment_id: string;
+          student_id: string;
+          enrollment_id: string | null;
+          submitted_at: string;
+          status: 'pending' | 'submitted' | 'reviewed' | 'late';
+          text_response: string | null;
+          attachment_path: string | null;
+          attachment_file_name: string | null;
+          attachment_file_size: number | null;
+          marks: number | null;
+          feedback: string | null;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          assignment_id: string;
+          student_id: string;
+          enrollment_id?: string | null;
+          submitted_at?: string;
+          status?: 'pending' | 'submitted' | 'reviewed' | 'late';
+          text_response?: string | null;
+          attachment_path?: string | null;
+          attachment_file_name?: string | null;
+          attachment_file_size?: number | null;
+          marks?: number | null;
+          feedback?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          assignment_id?: string;
+          student_id?: string;
+          enrollment_id?: string | null;
+          submitted_at?: string;
+          status?: 'pending' | 'submitted' | 'reviewed' | 'late';
+          text_response?: string | null;
+          attachment_path?: string | null;
+          attachment_file_name?: string | null;
+          attachment_file_size?: number | null;
+          marks?: number | null;
+          feedback?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "assignment_submissions_assignment_id_fkey";
+            columns: ["assignment_id"];
+            isOneToOne: false;
+            referencedRelation: "assignments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "assignment_submissions_student_id_fkey";
+            columns: ["student_id"];
+            isOneToOne: false;
+            referencedRelation: "students";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "assignment_submissions_enrollment_id_fkey";
+            columns: ["enrollment_id"];
+            isOneToOne: false;
+            referencedRelation: "student_enrollments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "assignment_submissions_reviewed_by_fkey";
+            columns: ["reviewed_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -1217,6 +1429,20 @@ export interface Database {
       };
       can_student_access_material: {
         Args: { p_material_id: string };
+        Returns: boolean;
+      };
+      is_teacher_authorized_for_assignment: {
+        Args: {
+          p_academic_year_id: string;
+          p_board_id: string;
+          p_class_level_id: string;
+          p_subject_id: string;
+          p_batch_id?: string | null;
+        };
+        Returns: boolean;
+      };
+      can_student_access_assignment: {
+        Args: { p_assignment_id: string };
         Returns: boolean;
       };
       generate_admission_number: {

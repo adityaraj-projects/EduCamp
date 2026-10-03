@@ -10,6 +10,7 @@ import { AuthenticatedPlaceholder } from '../features/auth/AuthenticatedPlacehol
 import { AttendanceScreen } from '../features/attendance/AttendanceScreen';
 import { FeesScreen } from '../features/fees/FeesScreen';
 import { MaterialsScreen } from '../features/materials/MaterialsScreen';
+import { AssignmentsScreen } from '../features/assignments/AssignmentsScreen';
 import { ProtectedRoute } from '../components/layout/ProtectedRoute';
 import { PublicOnlyRoute } from '../components/layout/PublicOnlyRoute';
 
@@ -87,6 +88,16 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <MaterialsScreen />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Phase 8 Assignments System */}
+      <Route
+        path="/assignments"
+        element={
+          <ProtectedRoute>
+            <AssignmentsScreen />
           </ProtectedRoute>
         }
       />
